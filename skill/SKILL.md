@@ -11,12 +11,25 @@ metadata:
 
 ## CAD 图纸翻译 CLI
 
-使用 `cli-anything-cad` 命令行工具完成 CAD 图纸翻译。
+使用 `cad-translate` 命令行工具完成 CAD 图纸翻译。
 
-### 首次使用 - 必须配置 LLM
+### 前置条件
+
+1. **Python 3.10+**，已安装依赖：`pip install -r requirements.txt && pip install -e .`
+2. **DWG 转换后端**（任选其一）：
+   - AutoCAD / 浩辰 CAD（Windows COM 自动化，需已安装）
+   - ODA File Converter（免费，需单独安装）
+   - LibreDWG（已捆绑在 `tools/libredwg/`，免费但兼容性较弱）
+3. **LLM API**：需要一个 OpenAI 兼容的 API（DeepSeek、阿里百炼、OpenRouter 等均可）
+
+### 首次使用 - 必须配置
 
 ```bash
-cli-anything-cad config llm init --non-interactive \
+# 交互式引导
+cad-translate onboard
+
+# 或直接配置 LLM
+cad-translate config llm init --non-interactive \
   --format openai_compatible \
   --provider custom \
   --model "模型名" \
@@ -24,25 +37,27 @@ cli-anything-cad config llm init --non-interactive \
   --api-key "你的密钥" \
   --system-prompt-mode cad_specialized
 
-cli-anything-cad config set --target-language ru
-```
+# 测试连接
+cad-translate config llm test
 
-或使用交互式引导：`cli-anything-cad onboard`
+# 设置目标语言（ru/zh/en/ja/ko 等）
+cad-translate config set --target-language ru
+```
 
 ### 翻译流水线（4 步）
 
 ```bash
-# 1. DWG → DXF（需要 AutoCAD/浩辰CAD/ODA/LibreDWG 之一）
-cli-anything-cad pipeline convert -i 图纸.dwg
+# 1. DWG → DXF（需要 COM 后端或 ODA/LibreDWG）
+cad-translate pipeline convert -i 图纸.dwg
 
 # 2. 提取文字到 Excel
-cli-anything-cad pipeline extract -i 输出/图纸.dxf
+cad-translate pipeline extract -i 输出/图纸.dxf
 
 # 3. LLM 翻译
-cli-anything-cad pipeline translate-excel -i 输出/图纸_extracted_texts.xlsx --target-language ru
+cad-translate pipeline translate-excel -i 输出/图纸_extracted_texts.xlsx --target-language ru
 
-# 4. 回填（--translation-mode replace 替换原文 / add 追加）
-cli-anything-cad pipeline apply -i 输出/图纸.dxf -e 输出/图纸_extracted_texts_translated.xlsx --translation-mode replace
+# 4. 回填（replace=替换原文 / add=追加）
+cad-translate pipeline apply -i 输出/图纸.dxf -e 输出/图纸_extracted_texts_translated.xlsx --translation-mode replace
 ```
 
 ### 常用命令
@@ -64,14 +79,16 @@ openai, openrouter, deepseek, dashscope, groq, minimax, zhipu, moonshot, silicon
 
 ### DWG 转换后端
 
-- `auto`：自动探测（推荐）
-- `autocad_com`：AutoCAD（需已安装）
-- `haochen_com`：浩辰 CAD（需已安装）
-- `oda`：ODA File Converter
-- `libredwg`：LibreDWG（捆绑在 tools/）
+| 后端 | 说明 | 要求 |
+|------|------|------|
+| `auto` | 自动探测 | — |
+| `autocad_com` | AutoCAD | Windows + AutoCAD 已安装 |
+| `haochen_com` | 浩辰 CAD | Windows + 浩辰 CAD 已安装 |
+| `oda` | ODA File Converter | 需单独安装 |
+| `libredwg` | LibreDWG | 捆绑在 tools/ |
 
 ### 回填模式
 
-- `replace`：替换原文为译文
+- `replace`：替换原文为译文（推荐）
 - `add`：在原文下方追加译文
 - `newline`：在原文内部换行追加译文
