@@ -1,0 +1,25 @@
+# CAD Translation CLI - Core Dependencies
+# Install: pip install -r requirements.txt
+
+# CLI framework
+click>=8.1.0
+prompt-toolkit>=3.0.0
+rich>=13.7.0
+
+# CAD processing
+ezdxf>=1.3.0
+pandas>=2.2.0
+openpyxl>=3.1.0
+
+# LLM translation
+requests>=2.31.0
+
+# Configuration & logging
+pydantic>=2.8.0
+pydantic-settings>=2.4.0
+structlog>=24.1.0
+python-dotenv>=1.0.1
+psutil>=5.9.0
+
+# Windows COM (optional, for AutoCAD/浩辰CAD)
+pywin32>=306; platform_system == "Windows"

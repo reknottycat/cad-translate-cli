@@ -1,0 +1,11 @@
+{
+  "provider": "openrouter",
+  "base_url": "https://openrouter.ai/api/v1",
+  "api_key": "",
+  "model": "stepfun/step-3.5-flash:free",
+  "timeout_seconds": 45,
+  "temperature": 0.1,
+  "max_tokens": 4000,
+  "batch_size": 12,
+  "batch_json": true
+}

@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Sensitive files
+.env
+config.json
+runtime_config.local.json
+*.db
+
+# Output / temp
+outputs/
+logs/
+*.log
+tmp/
+.tmp/
+
+# IDE / editor
+.opencode/
+.trae/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Pytest
+.pytest_cache/
