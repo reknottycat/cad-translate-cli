@@ -1,0 +1,353 @@
+浩辰CAD文件分析报告
+==================================================
+
+总实体数量: 2563
+图层数量: 14
+文本实体数量: 95
+几何实体数量: 2468
+
+实体类型统计:
+------------------------------
+AcDbLine: 1659 个
+AcDbArc: 292 个
+AcDbSpline: 404 个
+AcDbCircle: 10 个
+AcDbEllipse: 39 个
+AcDbPolyline: 15 个
+AcDbHatch: 13 个
+AcDbMText: 47 个
+AcDbBlockReference: 4 个
+AcDbText: 48 个
+AcDbRotatedDimension: 15 个
+AcDbProxyEntity: 15 个
+AcDbLeader: 1 个
+AcDb2LineAngularDimension: 1 个
+
+图层列表:
+------------------------------
+- 1轮廓实线层
+- 3中心线层
+- 7标注层
+- 粗实线
+- 2细线层
+- 6文字层
+- 8符号标注层
+- 5剖面线层
+- 01
+- 02
+- 绘图
+- 4虚线层
+- 图框层
+- 0
+
+文本实体:
+------------------------------
+  1. [AcDbMText] 图层: 6文字层
+     内容: 序号
+
+  2. [AcDbMText] 图层: 6文字层
+     内容: 名   称
+
+  3. [AcDbMText] 图层: 6文字层
+     内容: 材  料
+
+  4. [AcDbMText] 图层: 6文字层
+     内容: 备注
+
+  5. [AcDbMText] 图层: 6文字层
+     内容: 2
+
+  6. [AcDbMText] 图层: 6文字层
+     内容: 3
+
+  7. [AcDbMText] 图层: 6文字层
+     内容: 4
+
+  8. [AcDbMText] 图层: 6文字层
+     内容: 5
+
+  9. [AcDbMText] 图层: 6文字层
+     内容: 6
+
+ 10. [AcDbMText] 图层: 6文字层
+     内容: 7
+
+ 11. [AcDbMText] 图层: 6文字层
+     内容: 8
+
+ 12. [AcDbMText] 图层: 6文字层
+     内容: 9
+
+ 13. [AcDbMText] 图层: 6文字层
+     内容: 10
+
+ 14. [AcDbMText] 图层: 6文字层
+     内容: 11
+
+ 15. [AcDbMText] 图层: 6文字层
+     内容: 12
+
+ 16. [AcDbMText] 图层: 6文字层
+     内容: 13
+
+ 17. [AcDbMText] 图层: 6文字层
+     内容: 14
+
+ 18. [AcDbMText] 图层: 6文字层
+     内容: 15
+
+ 19. [AcDbMText] 图层: 6文字层
+     内容: 序号
+
+ 20. [AcDbMText] 图层: 6文字层
+     内容: 名   称
+
+ 21. [AcDbMText] 图层: 6文字层
+     内容: 材  料
+
+ 22. [AcDbMText] 图层: 6文字层
+     内容: 备注
+
+ 23. [AcDbMText] 图层: 6文字层
+     内容: 1
+
+ 24. [AcDbMText] 图层: 6文字层
+     内容: YSIQ77系列
+
+ 25. [AcDbMText] 图层: 6文字层
+     内容: 气动薄膜智能多级降压型调节阀
+
+ 26. [AcDbMText] 图层: 6文字层
+     内容: 总装小样图
+
+ 27. [AcDbMText] 图层: 6文字层
+     内容: 技术要求\P1、阀门设计制造按GB/T4213的规定；\P2、阀门测试按ANSI FCI 70-2的规定；\P3、压力温度额定值按GB/T12224；\P4、连接法兰标准按ASME B16.5的规定。
+
+ 28. [AcDbMText] 图层: 6文字层
+     内容: 241217-11
+
+ 29. [AcDbText] 图层: 6文字层
+     内容: F304
+
+ 30. [AcDbText] 图层: 6文字层
+     内容: F304
+
+ 31. [AcDbText] 图层: 6文字层
+     内容: 304+石墨
+
+ 32. [AcDbText] 图层: 6文字层
+     内容: 304
+
+ 33. [AcDbText] 图层: 6文字层
+     内容: 304
+
+ 34. [AcDbText] 图层: 6文字层
+     内容: 304+STL
+
+ 35. [AcDbText] 图层: 6文字层
+     内容: 304+STL
+
+ 36. [AcDbText] 图层: 6文字层
+     内容: 304+石墨
+
+ 37. [AcDbText] 图层: 6文字层
+     内容: 304
+
+ 38. [AcDbText] 图层: 6文字层
+     内容: A4-70
+
+ 39. [AcDbText] 图层: 6文字层
+     内容: 304
+
+ 40. [AcDbText] 图层: 6文字层
+     内容: 柔性石墨
+
+ 41. [AcDbText] 图层: 6文字层
+     内容: A4-70
+
+ 42. [AcDbText] 图层: 0
+     内容: HC_SUPERPART
+
+ 43. [AcDbText] 图层: 0
+     内容: HC_SUPERPART
+
+ 44. [AcDbMText] 图层: 6文字层
+     内容: %%CD1
+
+ 45. [AcDbMText] 图层: 6文字层
+     内容: %%CD2
+
+ 46. [AcDbMText] 图层: 6文字层
+     内容: n-%%Cd
+
+ 47. [AcDbMText] 图层: 6文字层
+     内容: H1
+
+ 48. [AcDbMText] 图层: 6文字层
+     内容: H2
+
+ 49. [AcDbMText] 图层: 6文字层
+     内容: H3
+
+ 50. [AcDbMText] 图层: 6文字层
+     内容: %%CD3
+
+ 51. [AcDbMText] 图层: 6文字层
+     内容: C
+
+ 52. [AcDbMText] 图层: 6文字层
+     内容: f1
+
+ 53. [AcDbMText] 图层: 6文字层
+     内容: H4
+
+ 54. [AcDbMText] 图层: 6文字层
+     内容: DN
+
+ 55. [AcDbMText] 图层: 6文字层
+     内容: 压力
+
+ 56. [AcDbMText] 图层: 6文字层
+     内容: L
+
+ 57. [AcDbMText] 图层: 6文字层
+     内容: %%CA
+
+ 58. [AcDbMText] 图层: 6文字层
+     内容: 位号
+
+ 59. [AcDbMText] 图层: 6文字层
+     内容: 连接尺寸图  RJ
+
+ 60. [AcDbMText] 图层: 6文字层
+     内容: n-d
+
+ 61. [AcDbText] 图层: 6文字层
+     内容: 30083191
+
+ 62. [AcDbText] 图层: 6文字层
+     内容: 400
+
+ 63. [AcDbText] 图层: 6文字层
+     内容: 292
+
+ 64. [AcDbText] 图层: 6文字层
+     内容: 1500lb
+
+ 65. [AcDbText] 图层: 6文字层
+     内容: 25
+
+ 66. [AcDbText] 图层: 6文字层
+     内容: 200
+
+ 67. [AcDbText] 图层: 6文字层
+     内容: 6.35
+
+ 68. [AcDbText] 图层: 6文字层
+     内容: 28.6
+
+ 69. [AcDbText] 图层: 6文字层
+     内容: 71.5
+
+ 70. [AcDbText] 图层: 6文字层
+     内容: 635
+
+ 71. [AcDbText] 图层: 6文字层
+     内容: 180
+
+ 72. [AcDbText] 图层: 6文字层
+     内容: 75
+
+ 73. [AcDbText] 图层: 6文字层
+     内容: 4-∅26
+
+ 74. [AcDbText] 图层: 6文字层
+     内容: 101.6
+
+ 75. [AcDbText] 图层: 6文字层
+     内容: 150
+
+ 76. [AcDbMText] 图层: 6文字层
+     内容: %%CD4
+
+ 77. [AcDbText] 图层: 6文字层
+     内容: 50.8
+
+ 78. [AcDbMText] 图层: 6文字层
+     内容: F
+
+ 79. [AcDbText] 图层: 6文字层
+     内容: 8.74
+
+ 80. [AcDbText] 图层: 6文字层
+     内容: 盘片
+
+ 81. [AcDbText] 图层: 6文字层
+     内容: 阀体
+
+ 82. [AcDbText] 图层: 6文字层
+     内容: 阀盖
+
+ 83. [AcDbText] 图层: 6文字层
+     内容: 垫片
+
+ 84. [AcDbText] 图层: 6文字层
+     内容: 压圈
+
+ 85. [AcDbText] 图层: 6文字层
+     内容: 阀芯
+
+ 86. [AcDbText] 图层: 6文字层
+     内容: 阀座
+
+ 87. [AcDbText] 图层: 6文字层
+     内容: 垫片
+
+ 88. [AcDbText] 图层: 6文字层
+     内容: 执行机构
+
+ 89. [AcDbText] 图层: 6文字层
+     内容: 阀杆
+
+ 90. [AcDbText] 图层: 6文字层
+     内容: 填料压板
+
+ 91. [AcDbText] 图层: 6文字层
+     内容: 圆螺母
+
+ 92. [AcDbText] 图层: 6文字层
+     内容: 填料压盖
+
+ 93. [AcDbText] 图层: 6文字层
+     内容: 填料
+
+ 94. [AcDbText] 图层: 6文字层
+     内容: 紧固件
+
+ 95. [AcDbText] 图层: 6文字层
+     内容: 304
+
+
+几何实体摘要 (前20个):
+------------------------------
+  1. [AcDbLine] 图层: 0 Handle: CF2
+  2. [AcDbLine] 图层: 0 Handle: CF3
+  3. [AcDbArc] 图层: 0 Handle: CF4
+  4. [AcDbArc] 图层: 0 Handle: CF5
+  5. [AcDbArc] 图层: 0 Handle: CF6
+  6. [AcDbArc] 图层: 0 Handle: CF7
+  7. [AcDbSpline] 图层: 0 Handle: CF8
+  8. [AcDbLine] 图层: 0 Handle: CF9
+  9. [AcDbSpline] 图层: 0 Handle: CFA
+ 10. [AcDbLine] 图层: 0 Handle: CFB
+ 11. [AcDbArc] 图层: 0 Handle: CFC
+ 12. [AcDbLine] 图层: 0 Handle: CFD
+ 13. [AcDbLine] 图层: 0 Handle: CFE
+ 14. [AcDbLine] 图层: 0 Handle: CFF
+ 15. [AcDbSpline] 图层: 0 Handle: D00
+ 16. [AcDbSpline] 图层: 0 Handle: D01
+ 17. [AcDbSpline] 图层: 0 Handle: D02
+ 18. [AcDbLine] 图层: 0 Handle: D03
+ 19. [AcDbArc] 图层: 0 Handle: D04
+ 20. [AcDbLine] 图层: 0 Handle: D05
+... 还有 2448 个几何实体

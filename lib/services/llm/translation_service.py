@@ -18,8 +18,8 @@ import pandas as pd
 import requests
 import structlog
 
-from lib.config import get_settings, load_runtime_config
-from lib.services.config_manager import ConfigManager
+from app.config import get_settings, load_runtime_config
+from app.services.config_manager import ConfigManager
 
 logger = structlog.get_logger(__name__)
 
@@ -403,14 +403,7 @@ class LLMTranslationService:
             type(self.settings).model_fields[field_name].default,
         )
 
-    def _retry_delay_seconds(self, attempt: int, status_code: int | None = None, retry_after: float | None = None) -> float:
-        # 429 (rate limit) 需要更长退避；优先使用服务器返回的 Retry-After。
-        if retry_after is not None and retry_after > 0:
-            return min(30.0, max(1.0, float(retry_after)))
-        if status_code == 429:
-            # 指数退避：1s, 2s, 4s, 8s, ... 上限 30s
-            return min(30.0, 1.0 * (2 ** (attempt - 1)))
-        # 其他可重试错误（5xx 等）使用原有线性退避
+    def _retry_delay_seconds(self, attempt: int) -> float:
         return min(1.5, 0.4 * attempt)
 
     def _should_retry_http_status(self, status_code: int) -> bool:
@@ -696,9 +689,7 @@ class LLMTranslationService:
             headers["X-Title"] = self.settings.APP_NAME
         response = requests.post(endpoint, headers=headers, json=payload, timeout=cfg["timeout"])
         if response.status_code != 200:
-            retry_after = response.headers.get("retry-after") or response.headers.get("Retry-After")
-            retry_hint = f" retry_after={retry_after}" if retry_after else ""
-            raise ValueError(f"LLM request failed: {response.status_code} {response.text[:300]}{retry_hint}")
+            raise ValueError(f"LLM request failed: {response.status_code} {response.text[:300]}")
         return self._extract_message_content(response.json())
 
     def _chat_anthropic(self, cfg: Dict[str, Any], messages: List[Dict[str, str]]) -> str:
@@ -728,9 +719,7 @@ class LLMTranslationService:
             timeout=cfg["timeout"],
         )
         if response.status_code != 200:
-            retry_after = response.headers.get("retry-after") or response.headers.get("Retry-After")
-            retry_hint = f" retry_after={retry_after}" if retry_after else ""
-            raise ValueError(f"LLM request failed: {response.status_code} {response.text[:300]}{retry_hint}")
+            raise ValueError(f"LLM request failed: {response.status_code} {response.text[:300]}")
         data = response.json()
         content = data.get("content") or []
         text_parts = [item.get("text", "") for item in content if item.get("type") == "text"]
@@ -748,9 +737,7 @@ class LLMTranslationService:
             timeout=cfg["timeout"],
         )
         if response.status_code != 200:
-            retry_after = response.headers.get("retry-after") or response.headers.get("Retry-After")
-            retry_hint = f" retry_after={retry_after}" if retry_after else ""
-            raise ValueError(f"LLM request failed: {response.status_code} {response.text[:300]}{retry_hint}")
+            raise ValueError(f"LLM request failed: {response.status_code} {response.text[:300]}")
         data = response.json()
         candidates = data.get("candidates") or []
         if not candidates:
@@ -772,9 +759,7 @@ class LLMTranslationService:
             timeout=cfg["timeout"],
         )
         if response.status_code != 200:
-            retry_after = response.headers.get("retry-after") or response.headers.get("Retry-After")
-            retry_hint = f" retry_after={retry_after}" if retry_after else ""
-            raise ValueError(f"LLM request failed: {response.status_code} {response.text[:300]}{retry_hint}")
+            raise ValueError(f"LLM request failed: {response.status_code} {response.text[:300]}")
         data = response.json()
         content = ((data.get("message") or {}).get("content")) or ""
         if not str(content).strip():
@@ -979,20 +964,7 @@ class LLMTranslationService:
                 except (requests.RequestException, ValueError) as exc:
                     last_error = exc
                     if attempt < 3 and self._is_retryable_chat_error(exc):
-                        # 从错误信息中提取 status_code 和 Retry-After，用于更准确的退避
-                        status_code = None
-                        retry_after = None
-                        msg = str(exc)
-                        sc_match = re.search(r"LLM request failed:\s*(\d+)", msg)
-                        if sc_match:
-                            status_code = int(sc_match.group(1))
-                        ra_match = re.search(r"retry[-_]after[:=]\s*([\d.]+)", msg, re.IGNORECASE)
-                        if ra_match:
-                            try:
-                                retry_after = float(ra_match.group(1))
-                            except ValueError:
-                                retry_after = None
-                        time.sleep(self._retry_delay_seconds(attempt, status_code=status_code, retry_after=retry_after))
+                        time.sleep(self._retry_delay_seconds(attempt))
                         continue
                     break
 

@@ -1,10 +1,10 @@
 """cli-anything REPL Skin — Unified terminal interface for all CLI harnesses.
 
 Copy this file into your CLI package at:
-    cli/utils/repl_skin.py
+    cad-translate/<software>/utils/repl_skin.py
 
 Usage:
-    from cli.utils.repl_skin import ReplSkin
+    from cli.<software>.utils.repl_skin import ReplSkin
 
     skin = ReplSkin("shotcut", version="1.0.0")
     skin.print_banner()

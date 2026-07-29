@@ -1,94 +1,102 @@
 ---
-name: cad-translate
-description: CAD图纸翻译CLI工具 - DWG/DXF文字提取、LLM翻译、回填
-license: MIT
-compatibility: opencode
-metadata:
-  audience: developers
-  workflow: cad-processing
-  tags: [cad, dxf, dwg, translation, cli, python]
+name: cad-translation-dev
+description: CAD Translation System development, build, and release assistant. Use when working on the CAD Translation System project for: (1) Building or releasing the scale_release runtime bundle, (2) Modifying backend (FastAPI) or frontend (React) code, (3) Performing security audits on the release bundle, (4) Configuring LLM providers or translation parameters, (5) Debugging translation pipeline issues, (6) Adding new CAD converter backends or insertion modes, (7) Any development, testing, or maintenance task within this project.
 ---
 
-## CAD 图纸翻译 CLI
+# CAD Translation System — Development Skill
 
-使用 `cad-translate` 命令行工具完成 CAD 图纸翻译。
+## Project at a Glance
 
-### 前置条件
+A CAD drawing translation system with three runtime surfaces:
+- **Web**: React 18 + Vite frontend, FastAPI backend
+- **CLI**: `cli-anything-cad` installable package in `agent-harness/`
+- **Desktop GUI** (legacy): `trans_CAD_gui_V1.0/`
 
-1. **Python 3.10+**，已安装依赖：`pip install -r requirements.txt && pip install -e .`
-2. **DWG 转换后端**（任选其一）：
-   - AutoCAD / 浩辰 CAD（Windows COM 自动化，需已安装）
-   - ODA File Converter（免费，需单独安装）
-   - LibreDWG（已捆绑在 `tools/libredwg/`，免费但兼容性较弱）
-3. **LLM API**：需要一个 OpenAI 兼容的 API（DeepSeek、阿里百炼、OpenRouter 等均可）
+**Trusted source**: Only `backend/` and `frontend/` are live source. `scale_release/` is a build artifact — never edit directly.
 
-### 首次使用 - 必须配置
+## Critical Paths
 
-```bash
-# 交互式引导
-cad-translate onboard
+| Task | Entry Point |
+|------|-------------|
+| Start backend | `backend/run_server.py` or `uvicorn app.main:app --reload` |
+| Start frontend | `cd frontend && npm run dev` |
+| Start Celery | `backend/run_celery.py` |
+| Build release | `scripts/build_scale.ps1` |
+| Build frontend dist | `cd frontend && npm run build` |
+| API docs | `http://localhost:8000/api/docs` |
+| Runtime config | `~/.config/cli-anything-cad/config.json` |
 
-# 或直接配置 LLM
-cad-translate config llm init --non-interactive \
-  --format openai_compatible \
-  --provider custom \
-  --model "模型名" \
-  --base-url "https://api.xxx.com/v1" \
-  --api-key "你的密钥" \
-  --system-prompt-mode cad_specialized
+## Development Workflow
 
-# 测试连接
-cad-translate config llm test
+### 1. Backend Change
 
-# 设置目标语言（ru/zh/en/ja/ko 等）
-cad-translate config set --target-language ru
+1. Edit files under `backend/app/`
+2. Restart `run_server.py` (or rely on `--reload`)
+3. Test via Swagger UI at `/api/docs`
+4. Run tests: `python -m pytest tests/backend/ -v`
+
+### 2. Frontend Change
+
+1. Edit files under `frontend/src/`
+2. Vite dev server hot-reloads automatically
+3. Type-check: `cd frontend && npx tsc --noEmit`
+4. Build for release: `cd frontend && npm run build`
+
+### 3. Build Release Bundle
+
+```powershell
+# Full rebuild (includes frontend build)
+powershell -ExecutionPolicy Bypass -File scripts/build_scale.ps1
+
+# Skip frontend build if already built
+powershell -ExecutionPolicy Bypass -File scripts/build_scale.ps1 -SkipFrontendBuild
 ```
 
-### 翻译流水线（4 步）
+Produces `scale_release/` + `scale_release.zip`.
 
-```bash
-# 1. DWG → DXF（需要 COM 后端或 ODA/LibreDWG）
-cad-translate pipeline convert -i 图纸.dwg
+### 4. Security Audit Release
 
-# 2. 提取文字到 Excel
-cad-translate pipeline extract -i 输出/图纸.dxf
+Run the audit script and manually verify results:
 
-# 3. LLM 翻译
-cad-translate pipeline translate-excel -i 输出/图纸_extracted_texts.xlsx --target-language ru
-
-# 4. 回填（replace=替换原文 / add=追加）
-cad-translate pipeline apply -i 输出/图纸.dxf -e 输出/图纸_extracted_texts_translated.xlsx --translation-mode replace
+```powershell
+. .agents/skills/cad-translation-dev/scripts/security-audit.ps1
 ```
 
-### 常用命令
+Or run checks manually — see [references/security-checklist.md](references/security-checklist.md).
 
-| 命令 | 说明 |
-|------|------|
-| `config show` | 查看当前配置 |
-| `config llm show` | 查看 LLM 配置 |
-| `config llm test` | 测试 LLM 连接 |
-| `config set --target-language ru` | 设置目标语言 |
-| `config set --translation-mode replace` | 设置回填模式 |
-| `files list --path .` | 扫描 CAD 文件 |
-| `tasks list` | 查看任务列表 |
-| `repl` | 交互式 REPL |
+**Must verify**:
+- No `.db` files in `scale_release/`
+- No `node_modules` in `scale_release/`
+- No `runtime_config.local.json` (user config) in `scale_release/`
+- No `.env` files (except `.env.example`)
+- No hardcoded API keys in any `scale_release/` file
 
-### 支持的 LLM 厂商
+### 5. Update Release After Backend/Frontend Changes
 
-openai, openrouter, deepseek, dashscope, groq, minimax, zhipu, moonshot, siliconflow, together, anthropic, google, ollama, lmstudio, nvidia, custom（任意 OpenAI 兼容 API）
+1. Build frontend: `cd frontend && npm run build`
+2. Delete old `scale_release/` and `scale_release.zip`
+3. Run `scripts/build_scale.ps1`
+4. Run security audit
+5. Remove any leaked files the script missed
+6. Commit `scale_release/` and `scale_release.zip`
 
-### DWG 转换后端
+## Code Standards
 
-| 后端 | 说明 | 要求 |
-|------|------|------|
-| `auto` | 自动探测 | — |
-| `autocad_com` | AutoCAD | Windows + AutoCAD 已安装 |
-| `haochen_com` | 浩辰 CAD | Windows + 浩辰 CAD 已安装 |
-| `oda` | ODA File Converter | 需单独安装 |
-| `libredwg` | LibreDWG | 捆绑在 tools/ |
+- **Module limit**: 800 lines max per file (project rule in `.trae/rules/project_rules.md`)
+- **Python**: PEP 8 + type annotations (`from __future__ import annotations`)
+- **Frontend**: PascalCase components, camelCase variables/functions
+- **After config changes**: Update `AGENTS.md` if relevant
 
-### 回填模式
+## Key Configuration
 
-- `replace`：替换原文为译文（推荐）
-- `add`：在原文下方追加译文
-- `newline`：在原文内部换行追加译文
+| Config | Location | Purpose |
+|--------|----------|---------|
+| Static env | `backend/.env` | DB, Redis, JWT, converter paths |
+| Runtime config | `~/.config/cli-anything-cad/config.json` | LLM provider, model, API keys |
+| Provider presets | `backend/app/config.py` | Built-in 10+ vendor presets |
+
+## Reference Documents
+
+- **Project layout**: [references/project-layout.md](references/project-layout.md) — directory/module navigation
+- **Security checklist**: [references/security-checklist.md](references/security-checklist.md) — release audit items
+- **API routes**: [references/api-routes.md](references/api-routes.md) — backend endpoint quick reference

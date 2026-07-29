@@ -17,11 +17,11 @@ from typing import Any, Dict, List, Optional
 
 import structlog
 
-from lib.workflow.engine import WorkflowRunner, StepResult
-from lib.functions.dwg_converter import DWGConverter
-from lib.functions.text_extractor import TextExtractor
-from lib.functions.translator import Translator
-from lib.functions.text_applier import TextApplier
+from app.workflow.engine import WorkflowRunner, StepResult
+from app.functions.dwg_converter import DWGConverter
+from app.functions.text_extractor import TextExtractor
+from app.functions.translator import Translator
+from app.functions.text_applier import TextApplier
 
 logger = structlog.get_logger(__name__)
 

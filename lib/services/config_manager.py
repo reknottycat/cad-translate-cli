@@ -8,7 +8,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field, ValidationError, field_validator
 
-from lib.config import get_settings
+from app.config import get_settings
 
 
 def _deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
@@ -194,7 +194,7 @@ class ConfigManager:
         self.cwd = Path(cwd) if cwd is not None else Path.cwd()
         self.paths = ConfigPaths(
             global_config=self.settings.get_runtime_config_path(),
-            project_config=self.cwd / ".cad-translaterc",
+            project_config=self.cwd / ".cli-anything-cadrc",
         )
         self.cli_overrides = cli_overrides or {}
 

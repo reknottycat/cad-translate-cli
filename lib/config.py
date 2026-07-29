@@ -13,8 +13,8 @@ from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_ENV_FILE = Path(os.environ.get("CAD_TRANSLATION_ENV_FILE", PROJECT_ROOT / ".env"))
+BACKEND_DIR = Path(__file__).resolve().parents[1]
+DEFAULT_ENV_FILE = Path(os.environ.get("CAD_TRANSLATION_ENV_FILE", BACKEND_DIR / ".env"))
 
 
 def _xdg_config_home() -> Path:
@@ -28,7 +28,7 @@ def _default_runtime_config_file() -> Path:
     explicit = os.environ.get("CAD_TRANSLATION_RUNTIME_CONFIG_FILE", "").strip()
     if explicit:
         return Path(explicit)
-    return _xdg_config_home() / "cad-translate" / "config.json"
+    return _xdg_config_home() / "cli-anything-cad" / "config.json"
 
 
 DEFAULT_RUNTIME_CONFIG_FILE = Path(
@@ -76,7 +76,7 @@ class Settings(BaseSettings):
     REDIS_URL: str = Field(default="redis://localhost:6379/0")
     ASYNC_TASKS_MODE: str = Field(default="auto")
 
-    BASE_DIR: Path = Field(default=PROJECT_ROOT)
+    BASE_DIR: Path = Field(default=BACKEND_DIR)
     UPLOAD_DIR: str = Field(default="uploads")
     OUTPUT_DIR: str = Field(default="outputs")
     TEMP_DIR: str = Field(default="temp")

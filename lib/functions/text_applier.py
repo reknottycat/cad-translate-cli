@@ -86,7 +86,7 @@ class TextApplier:
             nonlocal translated_count
             for entity in list(space):
                 try:
-                    if self._translate_entity(space, entity, translation_map, font_name, replace_mode, font_size_reduction, doc, newline_mode):
+                    if self._translate_entity(space, entity, translation_map, font_name, replace_mode, font_size_reduction, doc):
                         translated_count += 1
                 except Exception as exc:
                     logger.debug("entity_translate_failed", error=str(exc))
@@ -158,7 +158,6 @@ class TextApplier:
         replace_mode: bool,
         font_size_reduction: int,
         doc,
-        newline_mode: bool = False,
     ) -> bool:
         entity_type = entity.dxftype()
         if entity_type not in SUPPORTED_ENTITY_TYPES:

@@ -11,9 +11,9 @@ from typing import Any, Dict
 
 import requests
 
-from lib.config import get_settings, load_runtime_config
-from lib.services.config_manager import ConfigManager
-from lib.services.llm.translation_service import PROVIDER_PRESETS, llm_translation_service
+from app.config import get_settings, load_runtime_config
+from app.services.config_manager import ConfigManager
+from app.services.llm.translation_service import PROVIDER_PRESETS, llm_translation_service
 
 
 class RuntimeConfigService:
