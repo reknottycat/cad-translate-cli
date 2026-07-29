@@ -1,5 +1,29 @@
 # Project Layout Reference
 
+## Standalone CLI source layout
+
+For this repository, use the following paths for CLI development:
+
+```
+cli/
+├── cad_cli.py                 # Click command entry point
+├── core/                      # Pipeline, project, tasks, and release commands
+└── utils/backend_bridge.py    # Imports the local lib package
+
+lib/
+├── config.py                  # CLI settings and runtime configuration
+├── functions/
+│   └── dwg_converter.py       # DWG → DXF backend selection and COM subprocess
+├── services/
+│   ├── haochen_optimized_converter.py
+│   ├── autocad_converter.py
+│   └── com_converter_cli.py
+└── workflow/                  # CLI workflow primitives
+```
+
+For the standalone CLI, COM modules are `lib.services.*`; `app.services.*`
+and `backend/app/services/*` are web-backend paths and must not be used.
+
 ## Trusted Source (edit these)
 
 ```

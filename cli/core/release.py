@@ -10,16 +10,16 @@ from typing import Any
 
 
 PACKAGE_NAME = "cad-translate"
-PACKAGE_VERSION = "1.0.0"
+PACKAGE_VERSION = "1.0.1"
 ENTRY_POINT = "cad-translate"
 
 
 def harness_root() -> Path:
-    return Path(__file__).resolve().parents[3]
+    return Path(__file__).resolve().parents[2]
 
 
 def repo_root() -> Path:
-    return harness_root().parent
+    return harness_root()
 
 
 def dist_dir() -> Path:

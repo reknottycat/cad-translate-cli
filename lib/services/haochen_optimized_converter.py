@@ -372,7 +372,7 @@ def main():
     print("=" * 70)
     
     # 测试文件
-    repo_root = Path(__file__).resolve().parents[3]
+    repo_root = Path(__file__).resolve().parents[2]
     test_file = str(repo_root / 'sample.dwg')
     
     if not os.path.exists(test_file):

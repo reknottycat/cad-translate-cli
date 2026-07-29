@@ -189,7 +189,7 @@ Glossary behavior:
 ## Dependencies
 
 - Python runtime dependencies from `setup.py`
-- local backend source under `backend/`
+- local runtime source under `lib/`
 - one of the DWG conversion backends below
 
 DWG conversion backends:
@@ -197,9 +197,9 @@ DWG conversion backends:
 - default mode is `auto`
 - `auto` tries `haochen_com -> autocad_com -> oda`
 - `haochen_com` uses the copied in-project script at
-  `backend/app/services/haochen_optimized_converter.py`
+  `lib/services/haochen_optimized_converter.py`
 - `autocad_com` uses the copied in-project script at
-  `backend/app/services/autocad_converter.py`
+  `lib/services/autocad_converter.py`
 - `oda` uses local `ODAFileConverter.exe`
 
 Background-mode note:
@@ -214,6 +214,8 @@ Operational caveats:
 
 - `haochen_com` may be detected but still fail at save-time if the local HaoChen
   license is unavailable
+- The CLI COM bridge is layout-aware: it launches `lib.services.com_converter_cli`
+  and keeps source paths relative to the installed `lib` package.
 - `autocad_com` and `haochen_com` remain Windows-only
 - free OpenRouter models can still hit upstream `429` limits, so a fallback
   provider is strongly recommended

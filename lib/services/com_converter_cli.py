@@ -42,9 +42,10 @@ def main() -> int:
     if hasattr(sys.stderr, "reconfigure"):
         sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
-    repo_root = Path(__file__).resolve().parents[3]
-    if str(repo_root) not in sys.path:
-        sys.path.insert(0, str(repo_root))
+    source_root = Path(__file__).resolve().parents[1]
+    import_root = source_root.parent
+    if str(import_root) not in sys.path:
+        sys.path.insert(0, str(import_root))
 
     try:
         import pythoncom  # type: ignore

@@ -11,9 +11,9 @@ from pathlib import Path
 from typing import List, Optional, Dict, Any
 import structlog
 
-from app.services.celery_app import celery_app
-from app.services.alibaba_ai_translation_service import alibaba_ai_excel_processor as ai_excel_processor
-from app.config import get_settings
+from lib.services.celery_app import celery_app
+from lib.services.alibaba_ai_translation_service import alibaba_ai_excel_processor as ai_excel_processor
+from lib.config import get_settings
 
 logger = structlog.get_logger()
 settings = get_settings()
@@ -174,7 +174,7 @@ def batch_translate_task(
                    task_id=self.request.id, 
                    count=len(texts))
         
-        from app.services.alibaba_ai_translation_service import alibaba_ai_translation_service as ai_translation_service
+        from lib.services.alibaba_ai_translation_service import alibaba_ai_translation_service as ai_translation_service
         
         total_texts = len(texts)
         translated_texts = []
@@ -264,7 +264,7 @@ def cad_file_translate_task(
                    project_id=project_id,
                    file_count=len(file_paths))
         
-        from app.services.cad_processor import CADProcessor
+        from lib.services.cad_processor import CADProcessor
         
         processor = CADProcessor()
         total_files = len(file_paths)

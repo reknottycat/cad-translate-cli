@@ -9,25 +9,26 @@ import sysconfig
 from pathlib import Path
 
 import pandas as pd
+import pytest
 
 from cli.core.pipeline import run_apply, run_convert, run_extract
 
 
 def _repo_root() -> Path:
-    return Path(__file__).resolve().parents[4]
+    return Path(__file__).resolve().parents[2]
 
 
 def _sample_dxf() -> Path:
     path = _repo_root() / "241217-11+小样图.dxf"
     if not path.exists():
-        raise FileNotFoundError(f"Sample DXF not found: {path}")
+        pytest.skip(f"Sample DXF not bundled in the standalone CLI repository: {path}")
     return path
 
 
 def _sample_dwg() -> Path:
     path = _repo_root() / "1360001401 施工图.dwg"
     if not path.exists():
-        raise FileNotFoundError(f"Sample DWG not found: {path}")
+        pytest.skip(f"Sample DWG not bundled in the standalone CLI repository: {path}")
     return path
 
 
@@ -117,7 +118,7 @@ def test_dwg_convert_extract_apply_roundtrip(tmp_path: Path):
 
 class TestCLISubprocess:
     CLI_BASE = _resolve_cli("cad-translate")
-    ENV = os.environ | {"PYTHONPATH": str(_repo_root() / "agent-harness")}
+    ENV = os.environ | {"PYTHONPATH": str(_repo_root())}
 
     def _run(self, args: list[str], check: bool = True):
         return subprocess.run(

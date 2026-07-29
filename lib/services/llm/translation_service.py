@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Unified LLM translation services."""
 
@@ -18,8 +18,8 @@ import pandas as pd
 import requests
 import structlog
 
-from app.config import get_settings, load_runtime_config
-from app.services.config_manager import ConfigManager
+from lib.config import get_settings, load_runtime_config
+from lib.services.config_manager import ConfigManager
 
 logger = structlog.get_logger(__name__)
 

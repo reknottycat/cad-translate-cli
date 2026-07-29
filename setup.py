@@ -26,7 +26,7 @@ install_requires = [
 
 setup(
     name="cad-translate-cli",
-    version="1.0.0",
+    version="1.0.1",
     author="cad-translate contributors",
     description="CAD图纸翻译CLI工具 - DWG/DXF文字提取、LLM翻译、回填",
     long_description=long_description,

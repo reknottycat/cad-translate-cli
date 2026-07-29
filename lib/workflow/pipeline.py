@@ -17,16 +17,16 @@ from typing import Any, Dict, List, Optional
 
 import structlog
 
-from app.workflow.engine import WorkflowRunner, StepResult
-from app.functions.dwg_converter import DWGConverter
-from app.functions.text_extractor import TextExtractor
-from app.functions.translator import Translator
-from app.functions.text_applier import TextApplier
+from lib.workflow.engine import WorkflowRunner, StepResult
+from lib.functions.dwg_converter import DWGConverter
+from lib.functions.text_extractor import TextExtractor
+from lib.functions.translator import Translator
+from lib.functions.text_applier import TextApplier
 
 logger = structlog.get_logger(__name__)
 
 # 默认工作流文件路径（相对于 repo 根目录）
-_WORKFLOW_FILE = Path(__file__).resolve().parents[4] / ".agents" / "workflows" / "cad_translation_workflow.md"
+_WORKFLOW_FILE = Path(__file__).resolve().parents[2] / ".agents" / "workflows" / "cad_translation_workflow.md"
 
 
 class CADPipeline:

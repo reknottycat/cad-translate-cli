@@ -1,46 +1,62 @@
 from __future__ import annotations
 
 import sys
+import importlib
 from functools import lru_cache
 from pathlib import Path
 
 
 def _repo_root() -> Path:
-    return Path(__file__).resolve().parents[4]
+    return Path(__file__).resolve().parents[2]
 
 
 def _backend_dir() -> Path:
-    return _repo_root() / "backend"
+    root = _repo_root()
+    backend_app = root / "backend" / "app"
+    if backend_app.is_dir():
+        return backend_app
+    cli_lib = root / "lib"
+    if cli_lib.is_dir():
+        return cli_lib
+    raise RuntimeError(f"Unable to locate backend package under: {root}")
+
+
+def _import_root() -> Path:
+    return _backend_dir().parent
+
+
+def _package_name() -> str:
+    return _backend_dir().name
+
+
+def _import_module(module_name: str):
+    return importlib.import_module(f"{_package_name()}.{module_name}")
 
 
 def ensure_backend_path() -> Path:
-    backend_dir = _backend_dir()
-    backend_str = str(backend_dir)
-    if backend_str not in sys.path:
-        sys.path.insert(0, backend_str)
-    return backend_dir
+    import_root = _import_root()
+    import_root_str = str(import_root)
+    if import_root_str not in sys.path:
+        sys.path.insert(0, import_root_str)
+    return _backend_dir()
 
 
 @lru_cache(maxsize=1)
 def get_settings():
     ensure_backend_path()
-    from app.config import get_settings as _get_settings
-
-    return _get_settings()
+    return _import_module("config").get_settings()
 
 
 @lru_cache(maxsize=1)
 def get_text_extractor():
     ensure_backend_path()
-    from app.functions.text_extractor import TextExtractor
-
-    return TextExtractor()
+    return _import_module("functions.text_extractor").TextExtractor()
 
 
 @lru_cache(maxsize=1)
 def get_dwg_converter():
     ensure_backend_path()
-    from app.functions.dwg_converter import DWGConverter
+    DWGConverter = _import_module("functions.dwg_converter").DWGConverter
 
     settings = get_settings()
     return DWGConverter(
@@ -61,54 +77,40 @@ def get_dwg_converter():
 @lru_cache(maxsize=1)
 def get_text_applier():
     ensure_backend_path()
-    from app.functions.text_applier import TextApplier
-
-    return TextApplier()
+    return _import_module("functions.text_applier").TextApplier()
 
 
 @lru_cache(maxsize=1)
 def get_translator():
     ensure_backend_path()
-    from app.functions.translator import Translator
-
-    return Translator()
+    return _import_module("functions.translator").Translator()
 
 
 @lru_cache(maxsize=1)
 def get_cad_pipeline_service():
     ensure_backend_path()
-    from app.services.cad_pipeline_service import cad_pipeline_service
-
-    return cad_pipeline_service
+    return _import_module("services.cad_pipeline_service").cad_pipeline_service
 
 
 @lru_cache(maxsize=1)
 def get_pipeline():
     ensure_backend_path()
-    from app.workflow.pipeline import get_pipeline as _get_pipeline
-
-    return _get_pipeline()
+    return _import_module("workflow.pipeline").get_pipeline()
 
 
 @lru_cache(maxsize=1)
 def get_runtime_config_service():
     ensure_backend_path()
-    from app.services.runtime_config_service import runtime_config_service
-
-    return runtime_config_service
+    return _import_module("services.runtime_config_service").runtime_config_service
 
 
 @lru_cache(maxsize=1)
 def get_llm_excel_processor():
     ensure_backend_path()
-    from app.services.llm.translation_service import llm_excel_processor
-
-    return llm_excel_processor
+    return _import_module("services.llm.translation_service").llm_excel_processor
 
 
 @lru_cache(maxsize=1)
 def get_llm_translation_service():
     ensure_backend_path()
-    from app.services.llm.translation_service import llm_translation_service
-
-    return llm_translation_service
+    return _import_module("services.llm.translation_service").llm_translation_service

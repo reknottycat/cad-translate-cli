@@ -48,8 +48,8 @@ celery_app = Celery(
     broker="memory://" if ASYNC_RUNTIME_MODE == "local_eager" else settings.REDIS_URL,
     backend="cache+memory://" if ASYNC_RUNTIME_MODE == "local_eager" else settings.REDIS_URL,
     include=[
-        "app.services.tasks.cad_tasks",
-        "app.services.tasks.translation_tasks",
+        "lib.services.tasks.cad_tasks",
+        "lib.services.tasks.translation_tasks",
     ],
 )
 
@@ -69,8 +69,8 @@ celery_app.conf.update(
     task_compression="gzip",
     result_compression="gzip",
     task_routes={
-        "app.services.tasks.cad_tasks.*": {"queue": "cad_processing"},
-        "app.services.tasks.translation_tasks.*": {"queue": "translation"},
+        "lib.services.tasks.cad_tasks.*": {"queue": "cad_processing"},
+        "lib.services.tasks.translation_tasks.*": {"queue": "translation"},
     },
     task_default_queue="default",
     task_create_missing_queues=True,

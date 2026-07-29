@@ -17,7 +17,7 @@ import pandas as pd
 from pathlib import Path
 import structlog
 
-from app.config import get_settings
+from lib.config import get_settings
 
 logger = structlog.get_logger()
 

@@ -4,7 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cad-translate-cli"
-version = "1.0.0"
+version = "1.0.1"
+dynamic = ["readme", "authors", "dependencies"]
 description = "CAD图纸翻译CLI工具 - DWG/DXF文字提取、LLM翻译、回填"
 requires-python = ">=3.10"
 license = {text = "MIT"}

@@ -12,7 +12,20 @@ A CAD drawing translation system with three runtime surfaces:
 - **CLI**: `cli-anything-cad` installable package in `agent-harness/`
 - **Desktop GUI** (legacy): `trans_CAD_gui_V1.0/`
 
-**Trusted source**: Only `backend/` and `frontend/` are live source. `scale_release/` is a build artifact — never edit directly.
+**Trusted source**: In the standalone CLI repository, `cli/` and `lib/` are the live source. The copied web layout (`backend/` and `frontend/`) belongs to the parent system, not this package.
+
+## Standalone CLI layout
+
+- `cli/`: Click commands, pipeline orchestration, and the CLI bridge.
+- `lib/`: The installable runtime package (`config`, `functions`, `services`, and `workflow`).
+- `lib/services/haochen_optimized_converter.py`: HaoChen/GStarCAD/ZWCAD COM adapter.
+- `lib/services/autocad_converter.py`: AutoCAD COM adapter.
+- `lib/services/com_converter_cli.py`: Windows COM subprocess entry point.
+
+The CLI must import these modules as `lib.*`. Do not use the web application's
+`app.*` or `backend/app/*` paths in CLI code. The converter resolves paths
+relative to its own `lib/functions` module, so it works from a checkout or an
+installed package directory.
 
 ## Critical Paths
 
@@ -93,7 +106,23 @@ Or run checks manually — see [references/security-checklist.md](references/sec
 |--------|----------|---------|
 | Static env | `backend/.env` | DB, Redis, JWT, converter paths |
 | Runtime config | `~/.config/cli-anything-cad/config.json` | LLM provider, model, API keys |
-| Provider presets | `backend/app/config.py` | Built-in 10+ vendor presets |
+| Provider presets | `lib/config.py` | Built-in 10+ vendor presets |
+
+## CLI verification
+
+```powershell
+python -m pytest cli/tests -v
+python -m cli.cad_cli --help
+```
+
+On Windows, verify the COM path before running a DWG conversion:
+
+```powershell
+python -m cli.cad_cli pipeline convert -i .\drawing.dwg --backend haochen_com
+```
+
+The local machine must have HaoChen CAD/GStarCAD/ZWCAD installed, its COM
+registration available, and a license that permits opening and saving DWG.
 
 ## Reference Documents
 

@@ -19,8 +19,8 @@ from typing import List, Dict, Optional, Tuple, Any
 import structlog
 import tempfile
 import shutil
-from app.config import get_settings
-from app.functions.dwg_converter import DWGConverter
+from lib.config import get_settings
+from lib.functions.dwg_converter import DWGConverter
 
 logger = structlog.get_logger(__name__)
 

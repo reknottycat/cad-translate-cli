@@ -1,8 +1,8 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Backward-compatible wrapper for legacy Alibaba service imports."""
 
-from app.services.llm.translation_service import (
+from lib.services.llm.translation_service import (
     LLMExcelTranslationProcessor,
     LLMTranslationService,
     llm_excel_processor,

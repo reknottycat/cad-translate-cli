@@ -14,14 +14,14 @@ from typing import Any
 import pandas as pd
 from fastapi import UploadFile
 
-from app.config import get_settings
-from app.services.cad_text_processor import cad_text_processor
-from app.services.alibaba_ai_translation_service import alibaba_ai_translation_service
-from app.utils.file_utils import get_safe_filename, resolve_within_directory
-from app.workflow.pipeline import CADPipeline, get_pipeline
-from app.functions.dwg_converter import DWGConverter
-from app.functions.text_extractor import TextExtractor
-from app.functions.text_applier import TextApplier
+from lib.config import get_settings
+from lib.services.cad_text_processor import cad_text_processor
+from lib.services.alibaba_ai_translation_service import alibaba_ai_translation_service
+from lib.utils.file_utils import get_safe_filename, resolve_within_directory
+from lib.workflow.pipeline import CADPipeline, get_pipeline
+from lib.functions.dwg_converter import DWGConverter
+from lib.functions.text_extractor import TextExtractor
+from lib.functions.text_applier import TextApplier
 
 
 class TaskCancelledError(RuntimeError):

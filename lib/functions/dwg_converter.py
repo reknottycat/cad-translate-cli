@@ -57,11 +57,30 @@ class DWGConverter:
         self.libredwg_download_url = libredwg_download_url
         self.libredwg_auto_download = libredwg_auto_download
 
+    def _source_root(self) -> Path:
+        """Return the package root containing ``functions`` and ``services``.
+
+        The web backend uses ``backend/app`` while the standalone CLI uses
+        ``lib``.  Keeping this lookup relative to the current module makes
+        the COM bridge independent of the checkout or installation path.
+        """
+        return Path(__file__).resolve().parents[1]
+
     def _backend_root(self) -> Path:
-        return Path(__file__).resolve().parents[2]
+        """Return the runtime root used for relative backend files."""
+        source_root = self._source_root()
+        if source_root.name == "app" and source_root.parent.name == "backend":
+            return source_root.parent
+        return source_root
 
     def _repo_root(self) -> Path:
-        return self._backend_root().parent
+        source_root = self._source_root()
+        if source_root.name == "app" and source_root.parent.name == "backend":
+            return source_root.parent.parent
+        return source_root.parent
+
+    def _service_package(self) -> str:
+        return f"{self._source_root().name}.services"
 
     def _resolve_support_path(self, value: str) -> Path:
         """Resolve support files relative to backend/ first, then repo root."""
@@ -123,7 +142,7 @@ class DWGConverter:
         raise ValueError(f"Unsupported DWG conversion backend: {backend}")
 
     def _service_script_path(self, filename: str) -> Path:
-        return self._backend_root() / "app" / "services" / filename
+        return self._source_root() / "services" / filename
 
     def _ensure_service_script(self, filename: str) -> Path:
         script_path = self._service_script_path(filename)
@@ -484,7 +503,11 @@ class DWGConverter:
             output_dxf_path,
             converter_module.rsplit(".", 1)[-1],
         )
-        python_path_parts = [str(backend_dir), str(repo_root)]
+        python_path_parts = []
+        for path in (backend_dir.parent, repo_root):
+            path_str = str(path)
+            if path_str not in python_path_parts:
+                python_path_parts.append(path_str)
         existing = os.environ.get("PYTHONPATH")
         if existing:
             python_path_parts.append(existing)
@@ -496,7 +519,7 @@ class DWGConverter:
         command = [
             sys.executable,
             "-m",
-            "app.services.com_converter_cli",
+            f"{self._service_package()}.com_converter_cli",
             "--module",
             converter_module,
             "--class",
@@ -545,7 +568,7 @@ class DWGConverter:
     def _convert_via_haochen_com(self, dwg_file_path: str, output_dxf_path: str) -> str:
         self._ensure_service_script("haochen_optimized_converter.py")
         return self._run_com_converter(
-            "app.services.haochen_optimized_converter",
+            f"{self._service_package()}.haochen_optimized_converter",
             "OptimizedHaoChenCADConverter",
             dwg_file_path,
             output_dxf_path,
@@ -554,7 +577,7 @@ class DWGConverter:
     def _convert_via_autocad_com(self, dwg_file_path: str, output_dxf_path: str) -> str:
         self._ensure_service_script("autocad_converter.py")
         return self._run_com_converter(
-            "app.services.autocad_converter",
+            f"{self._service_package()}.autocad_converter",
             "AutoCADConverter",
             dwg_file_path,
             output_dxf_path,

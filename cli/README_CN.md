@@ -1,7 +1,7 @@
 # cad-translate 中文使用手册
 
 `cad-translate` 是一个本地可安装的 CAD 翻译命令行工具，负责把
-`backend/` 中现有的能力包装成可直接使用的 CLI 工作流。
+`lib/` 中现有的能力包装成可直接使用的 CLI 工作流。
 
 它当前主要支持：
 
@@ -142,7 +142,7 @@ cad-translate pipeline apply -i ".\sample.dxf" -e ".\output\sample_extracted_tex
 
 如果存在默认术语库：
 
-`backend/DocuTranslate.csv`
+`lib/DocuTranslate.csv`
 
 系统会在合适模式下自动使用它。
 
