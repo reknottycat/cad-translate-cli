@@ -1,22 +1,43 @@
 # 从 standalone 迁移到维护中的 cad-translate
 
-**状态：旧仓兼容/弃用入口；本次仅修改文档，不迁移运行时或用户数据。**
+**状态：本仓库保留兼容，但不再作为主维护入口。**
 当前维护入口：[cad-translation-web/agent-harness](https://github.com/reknottycat/cad-translation-web/tree/main/agent-harness)。
 
 核对基线：standalone `15659adca42d42c59f274671de9053b0ee83728a`；
-canonical `f218e67edb5a53ee4855c96fbc02502e1ed36a7f`。以下比较来自这些版本的源码，
-不是对将来版本、第三方脚本或既有 PyPI 发布状态的保证。
+canonical `f218e67edb5a53ee4855c96fbc02502e1ed36a7f`。
 
-## 1. 最小方案与边界
+## 1. 这个 PR 解决什么问题
 
-保留 standalone 现有代码、包名、`1.0.1` 版本和所有入口，只将它标明为旧版兼容参考。
-新功能与修复进入 canonical 的 `agent-harness` / `backend/app`，不复制实现回来。
-不新增自动转发 shim：REPL、onboard、fallback 参数和 JSON 错误契约存在差异，不能无损转发。
-也不因代码搜索未返回结果就推断“没有旧用户”。需要某个具体兼容适配时，应先提供调用样例、
-预期输出与退出码测试，再单独评审薄适配；不能自动安装、自动迁移配置或吞掉不支持的参数。
+这不是一个 CAD 算法 bug，而是一个**双入口 / 双维护源**问题：
 
-本次不改版本号，不创建 tag/release，不执行 PyPI 上传，不删除 Git 历史、配置或任务。
-canonical 已明确维护入口，本次无需再改其实现或打包配置。
+1. 两个不同的 Python distribution 都安装同名命令 `cad-translate`；
+2. standalone README 仍把旧仓描述成完整、持续维护的产品；
+3. canonical CLI 已直接复用 `backend/app`，而旧仓仍维护独立的 `lib.*` 实现；
+4. 如果继续两边改，用户和 Agent 可能装错入口，同一修复也可能只落在其中一边，重新产生漂移。
+
+因此本次的目标只有一个：
+
+> **明确 `cad-translation-web/agent-harness` 是 canonical CLI；`cad-translate-cli` 只保留兼容和历史复现。**
+
+### 本次会做
+
+- 在旧仓 README 和相关文档顶部明确 deprecated / legacy 状态；
+- 列出命令、安装方式和配置差异；
+- 给出独立虚拟环境迁移与验证方法；
+- 新功能和 bugfix 统一指向 canonical 仓库。
+
+### 本次不会做
+
+- 不删除旧 CLI 或 Git 历史；
+- 不迁移、删除或覆盖已有配置和任务；
+- 不修改 standalone 的 `1.0.1`；
+- 不创建 tag、GitHub Release 或 PyPI 新版本；
+- 不把 `backend/app` 的新实现复制回旧仓；
+- 不增加“所有旧命令都自动转发”的 shim。
+
+之所以暂不加 shim，是因为两边并非完全等价：旧端还有 `repl`、`onboard`、`release`
+以及不同的 fallback 参数、JSON 错误和会话行为。直接转发可能让旧脚本表面能运行、实际语义发生变化。
+如果以后确认某个具体旧集成必须兼容，再围绕那个调用补一个有 argv / stdout / exit-code 测试的薄适配。
 
 ## 2. 安装引用与包身份
 
