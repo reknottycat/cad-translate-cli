@@ -1,3 +1,49 @@
+# CAD Translate CLI — legacy compatibility / deprecated
+
+> [!WARNING]
+> **本仓库是旧版兼容/弃用入口，不再作为独立产品演进。**
+> 当前唯一维护的 CLI 是 **[cad-translation-web/agent-harness](https://github.com/reknottycat/cad-translation-web/tree/main/agent-harness)**，
+> Python 包名为 `cad-translate`，入口为 `cad_translate.cli:main`。
+> 新功能与修复请进入该仓库；CAD 实现继续直接复用 `backend/app`，不要复制回本仓库。
+
+现有 standalone 安装暂时保留原行为：`cad-translate-cli==1.0.1`、
+`cli.cad_cli:main`、`python -m cli` 和旧版 REPL 均未改动。
+本次仅收口文档与维护入口，不新增转发 shim，不迁移或删除用户配置、任务和 Git 历史，
+不修改版本号，也不新增 PyPI 发布。这里的“兼容”指保留旧行为，**不是与新 CLI 完全等价**。
+
+## 新用户与迁移用户
+
+从完整的 `reknottycat/cad-translation-web` checkout 安装，在**独立虚拟环境**内运行：
+
+```bash
+# 在 cad-translation-web 根目录，而不是本仓库；先创建并激活独立虚拟环境
+python -m pip install -r backend/requirements.txt
+python -m pip install -e ./agent-harness
+python -m cad_translate.cli --version
+python -m cad_translate.cli --help
+```
+
+不要只复制 `agent-harness/`：构建时需要相邻的 `backend/app/version.py`，
+运行时需要可找到的 `backend/app`。两包都会安装同名 `cad-translate` 启动器，
+不要在同一环境叠加安装；迁移前请先阅读 **[迁移与验证指南](docs/MIGRATION.md)**。
+
+## 关键差异
+
+| 项目 | 迁移注意事项 |
+|---|---|
+| 主流水线 | 保留 `pipeline convert/extract/translate-excel/apply` 的主要参数；不承诺输出 JSON 完全一致 |
+| 交互模式 | 旧端裸命令进入 REPL；新端显示帮助，没有 `repl`、`onboard`、`release` 命令 |
+| LLM fallback | 新端 `config llm init/test` 没有旧 `--fallback-*` 参数；使用配置中的 `llm.fallback_models` |
+| 回填模式 | 两边 CLI 当前均只接受 `add/replace`；旧文档的 `newline` 不是可用命令参数 |
+| 配置路径 | 两边实际默认均为 `~/.config/cli-anything-cad/config.json`，项目文件为当前目录 `.cli-anything-cadrc`；支持环境变量覆盖 |
+| 隔离验证 | 新虚拟环境不会隔离共享配置文件；先用配置副本和新的输出目录验证 |
+
+下方及旧手册中关于“后续开发”、安装位置、路径和命令的描述仅作历史记录；
+与上方或迁移指南不一致时，以本说明及已核对源码为准。
+
+<details>
+<summary>旧版历史说明（仅供复现已有 standalone 安装，不是当前产品指南）</summary>
+
 # CAD Translate CLI
 
 CAD 图纸翻译命令行工具 — 从 DWG/DXF 文件中提取文字，通过 LLM 翻译后回填。
@@ -140,3 +186,5 @@ cad-translate pipeline apply -i 输出/图纸.dxf -e 输出/图纸_extracted_tex
 ## 许可证
 
 MIT
+
+</details>

@@ -1,5 +1,13 @@
 # cad-translate
 
+> [!WARNING]
+> **Deprecated standalone compatibility reference.** The maintained CLI is
+> [cad-translation-web/agent-harness](https://github.com/reknottycat/cad-translation-web/tree/main/agent-harness).
+> New features and fixes belong there; the installation, development plans and commands below are historical.
+> Read the [migration guide](../docs/MIGRATION.md) first. Both packages own the same launcher;
+> actual config names are `cli-anything-cad/config.json` and `.cli-anything-cadrc`;
+> both CLIs accept only `add/replace`. No runtime forwarding, config migration or package release is introduced.
+
 `cad-translate` is an installable CLI harness for local CAD translation
 workflows.
 

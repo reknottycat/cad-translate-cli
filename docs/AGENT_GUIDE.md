@@ -1,5 +1,13 @@
 # CAD Translate CLI — Agent 集成指南
 
+> [!WARNING]
+> **旧版兼容参考 / deprecated。** 当前维护入口为
+> [cad-translation-web/agent-harness](https://github.com/reknottycat/cad-translation-web/tree/main/agent-harness)。
+> 新功能与修复在 canonical 仓库完成；下文旧安装流程、命令及“后续开发”安排仅供复现旧版。
+> 先阅读 [迁移指南](MIGRATION.md)：两包同名启动器不能混装；实际配置名为
+> `cli-anything-cad/config.json` 和 `.cli-anything-cadrc`，CLI 只接受 `add/replace`。
+> 本次不改变旧运行时，也不自动转发、迁移配置或发布包。
+
 > 本文件面向 AI 编程助手（Claude、GPT、Copilot 等），说明如何调用本工具完成 CAD 图纸翻译。
 
 ## 工具概述
