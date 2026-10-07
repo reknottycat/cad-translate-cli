@@ -1,3 +1,50 @@
+# CAD Translate CLI (legacy)
+
+> [!WARNING]
+> **本仓库不再是 CAD CLI 的主维护入口。**
+> 当前维护中的 CLI 位于 **[cad-translation-web/agent-harness](https://github.com/reknottycat/cad-translation-web/tree/main/agent-harness)**，
+> 包名为 `cad-translate`，入口为 `cad_translate.cli:main`，并直接复用 `backend/app`。
+
+## 这个仓库为什么要收口
+
+现在有两个仓库都提供名为 `cad-translate` 的命令：
+
+- 本仓库：distribution 是 `cad-translate-cli`，入口是 `cli.cad_cli:main`；
+- canonical 仓库：distribution 是 `cad-translate`，入口是 `cad_translate.cli:main`。
+
+旧 README 仍把本仓库写成完整、持续维护的产品，因此用户或 Agent 很容易装错入口，
+后续修复也可能分别落到旧 `lib.*` 和新 `backend/app`，再次产生功能漂移。
+这就是本次 PR 要解决的问题；它不是在修一个 CAD 算法 bug。
+
+## 当前决策
+
+- **新安装、新功能和 bugfix：只进入 `cad-translation-web/agent-harness` / `backend/app`。**
+- **本仓库：保留给已有 standalone 用户做兼容和历史复现。**
+- 不删除代码或 Git 历史，不迁移用户配置/任务，不改 `1.0.1`，不发布新的 PyPI 版本。
+- 暂不增加自动转发 shim：旧端仍有 `repl`、`onboard`、`release` 和不同的 fallback/错误行为，
+  直接转发并不能保证旧脚本无损兼容。
+
+## 迁移要点
+
+| 项目 | standalone | canonical |
+|---|---|---|
+| distribution | `cad-translate-cli` | `cad-translate` |
+| console entry | `cli.cad_cli:main` | `cad_translate.cli:main` |
+| 实现 | 仓内 `lib.*` | 直接复用 `backend/app` |
+| 裸命令 | 进入 REPL | 显示帮助 |
+| 特有命令 | `repl` / `onboard` / `release` | 不提供同名行为 |
+| translation mode | `add` / `replace` | `add` / `replace` |
+| 全局配置 | `~/.config/cli-anything-cad/config.json` | 相同 |
+| 项目配置 | 当前目录 `.cli-anything-cadrc` | 相同 |
+
+两个 distribution 会安装同名 `cad-translate` launcher，因此迁移时请使用**新的虚拟环境**，
+不要直接叠加安装。完整命令/配置差异与验证步骤见 **[docs/MIGRATION.md](docs/MIGRATION.md)**。
+
+下方旧手册仅用于已有 standalone 环境的历史复现；与上方或迁移指南冲突时，以迁移指南为准。
+
+<details>
+<summary>旧版历史说明（仅供复现已有 standalone 安装，不是当前产品指南）</summary>
+
 # CAD Translate CLI
 
 CAD 图纸翻译命令行工具 — 从 DWG/DXF 文件中提取文字，通过 LLM 翻译后回填。
@@ -7,7 +54,7 @@ CAD 图纸翻译命令行工具 — 从 DWG/DXF 文件中提取文字，通过 L
 - **DWG → DXF 转换**：支持 AutoCAD COM / 浩辰 CAD COM / ODA File Converter / LibreDWG
 - **文字提取**：从 DXF 中提取 TEXT / MTEXT / ATTDEF / ATTRIB 实体，导出为 Excel
 - **LLM 翻译**：支持 16+ 厂商（OpenAI、DeepSeek、阿里百炼、MiniMax、智谱等）
-- **翻译回填**：将译文写回 DXF，支持替换、追加、换行三种模式
+- **翻译回填**：将译文写回 DXF，支持替换、追加两种模式
 
 ## 安装
 
@@ -84,7 +131,6 @@ cad-translate pipeline apply -i 输出/图纸.dxf -e 输出/图纸_extracted_tex
 |------|------|
 | `replace` | 替换原文为译文（推荐） |
 | `add` | 在原文下方追加译文 |
-| `newline` | 在原文内部换行追加 |
 
 ### 常用命令
 
@@ -124,7 +170,7 @@ cad-translate pipeline apply -i 输出/图纸.dxf -e 输出/图纸_extracted_tex
 | 文件 | 说明 |
 |------|------|
 | `.env` | 环境变量配置（从 `.env.example` 复制） |
-| `~/.config/cad-translate/config.json` | 运行时配置（LLM、CAD 参数） |
+| `~/.config/cli-anything-cad/config.json` | 运行时配置（LLM、CAD 参数） |
 | `lib/config/runtime_config.example.json` | 运行时配置模板 |
 
 ## DWG 转换后端
@@ -140,3 +186,5 @@ cad-translate pipeline apply -i 输出/图纸.dxf -e 输出/图纸_extracted_tex
 ## 许可证
 
 MIT
+
+</details>

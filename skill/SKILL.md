@@ -1,9 +1,19 @@
 ---
 name: cad-translation-dev
-description: CAD Translation System development, build, and release assistant. Use when working on the CAD Translation System project for: (1) Building or releasing the scale_release runtime bundle, (2) Modifying backend (FastAPI) or frontend (React) code, (3) Performing security audits on the release bundle, (4) Configuring LLM providers or translation parameters, (5) Debugging translation pipeline issues, (6) Adding new CAD converter backends or insertion modes, (7) Any development, testing, or maintenance task within this project.
+description: Legacy compatibility reference for deprecated cad-translate-cli installations. For maintained CLI and CAD pipeline development, use reknottycat/cad-translation-web/agent-harness and backend/app instead.
 ---
 
 # CAD Translation System — Development Skill
+
+> [!WARNING]
+> **Legacy compatibility scope only.** The canonical maintained CLI is
+> [cad-translation-web/agent-harness](https://github.com/reknottycat/cad-translation-web/tree/main/agent-harness), package `cad-translate`,
+> entry `cad_translate.cli:main`, reusing `backend/app` directly.
+> Read [MIGRATION.md](../docs/MIGRATION.md) before installing or changing anything.
+> The `cli/`, `lib.*`, module-launch and build instructions below describe historical
+> standalone reproduction only. They do not authorize new feature development here,
+> copying backend fixes into `lib/`, publishing a package, or deleting release/history data.
+> Do not silently substitute the canonical CLI for legacy REPL/onboard/fallback calls.
 
 ## Project at a Glance
 
